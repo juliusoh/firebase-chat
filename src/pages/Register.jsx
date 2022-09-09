@@ -59,7 +59,7 @@ const Register = () => {
   return (
     <div className="formContainer">
       <div className="formWrapper">
-        <span className="logo">Google Firebase Chat</span>
+        <span className="logo">Firebase Chat</span>
         <span className="title">Register</span>
         <form onSubmit={handleSubmit} action="">
           <input type="text" placeholder="Display Name" />
