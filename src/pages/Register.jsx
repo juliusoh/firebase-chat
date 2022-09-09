@@ -4,10 +4,13 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db, storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [err, setErr] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const displayName = e.target[0].value;
@@ -19,7 +22,7 @@ const Register = () => {
       //Create user
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
-      const storageRef = ref(storage, `${displayName}`);
+      const storageRef = await ref(storage, displayName);
 
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -42,6 +45,8 @@ const Register = () => {
               email,
               photoURL: downloadURL,
             });
+            await setDoc(doc(db, "userChats", res.user.uid), {});
+            navigate("/");
           });
         }
       );
